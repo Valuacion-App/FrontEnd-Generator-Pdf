@@ -1,6 +1,17 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { NgxFileDropModule } from 'ngx-file-drop';
+
+import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+
+import { HttpClient } from '@angular/common/http';
+
+
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatSort, MatSortModule} from '@angular/material/sort';
@@ -12,14 +23,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 
-export interface TasationData {
+
+interface TasationData {
   CodigoTasacion: string;
   Codigo: string;
   Viñeta: string;
@@ -54,6 +60,13 @@ export interface TasationData {
   },
   Created: string;
   Updated: string;
+}
+
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
@@ -857,6 +870,11 @@ enum articles {
   imports: [
     MatFormFieldModule,
     MatInputModule,
+    
+    FormsModule,
+    HttpClientModule,
+    NgxFileDropModule,
+
     CommonModule, 
     RouterOutlet, 
     MatButtonModule, 
@@ -869,6 +887,9 @@ enum articles {
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
+
+
+
 export class AppComponent implements AfterViewInit {
   title = 'Generador de Monografias';
   displayColumns: any[] = columns;
@@ -883,12 +904,11 @@ export class AppComponent implements AfterViewInit {
   @ViewChild(MatPaginator)paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     
-    this.dataTasation = new MatTableDataSource(dataCsv);
+    this.dataTasation = new MatTableDataSource(dataCsv),
     
   }
-
     
   ngOnInit() {
     this.paginator._intl.itemsPerPageLabel="Test String";
@@ -939,4 +959,71 @@ export class AppComponent implements AfterViewInit {
       this.columnsToDisplay[randomIndex] = temp;
     }
   }*/
+
+  
+
+
+  private dataReceived: TasationData[] = []
+
+
+  public files: NgxFileDropEntry[] = [];
+
+  public dropped(files: NgxFileDropEntry[]) {
+    this.files = files;
+    for (const droppedFile of files) {
+
+      // Is it a file?
+      if (droppedFile.fileEntry.isFile) {
+        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+        fileEntry.file((file: File) => {
+
+          // Here you can access the real file
+          console.log(droppedFile.relativePath, file);
+
+          // You could upload it like this:
+          const formData: FormData = new FormData()
+          formData.append('csvFile', file, droppedFile.relativePath)
+
+          console.log("formData values> ", formData);
+
+          // Headers
+          const headers = new HttpHeaders({
+            'Content-Type': 'multipart/form-data'
+          })
+
+          this.http.post<TasationData[]>('http://localhost:3000/api/v1/upload-file', formData)
+            .subscribe((data) => {
+              // Sanitized logo returned from backend
+              console.log("RETURN DATA> ", typeof data)
+              this.dataReceived = data
+
+              console.log("dataReceived ----> ", this.dataReceived[0]);
+              
+            },
+            )
+
+          /**
+          
+  
+        
+  
+         
+          **/
+
+        });
+      } else {
+        // It was a directory (empty directories are added, otherwise only files)
+        const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
+        console.log(droppedFile.relativePath, fileEntry);
+      }
+    }
+  }
+
+  public fileOver(event: any) {
+    console.log(event);
+  }
+
+  public fileLeave(event: any) {
+    console.log(event);
+  }
 }
