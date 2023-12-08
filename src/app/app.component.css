@@ -1,0 +1,86 @@
+table {
+    width: 100%;
+  }
+.mat-mdc-form-field {
+  padding-right: 10%;
+  font-size: 14px;
+  width: 40%;
+}
+.mat-column-Ubication {
+  width: 20%;
+  font-weight: bold;
+}
+.mat-column-Article {
+  width: 10%;
+  font-weight: bold;
+}
+.mat-column-SubGroup {
+  width: 10%;
+  font-weight: bold;
+}
+.mat-column-actions {
+  text-align: center;
+}
+.mat-column-Detalle {
+  max-width: 10%;
+}
+.mat-column-expandedDetail {
+  background-color: rgba(128, 174, 197, 0.15);
+}
+.mat-mdc-header-cell {
+  font-weight: bold;
+}
+.crop { 
+  overflow:hidden;
+  white-space:nowrap; 
+  text-overflow:ellipsis; 
+  width: 240px;
+}
+.cropDetails { 
+  overflow:hidden;
+  white-space:nowrap; 
+  text-overflow:ellipsis; 
+  width: 130px;
+}
+.mat-column-CodigoTasacion {
+  min-width: 10%;
+  padding-right: 24px;
+}
+  button {
+    margin: 16px 8px;
+  }
+  
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: rgba(111, 169, 198, 0.15);
+  }
+  .icon-pdf {
+    color: rgba(245, 11, 11, 0.99);
+  }
+  .icon-excel {
+    color: rgba(28, 217, 11, 0.99);
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: rgba(111, 169, 198, 0.15);
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .example-element-description {
+    padding: 16px;
+  }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
