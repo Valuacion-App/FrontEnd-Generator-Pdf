@@ -174,8 +174,6 @@ export class AppComponent implements AfterViewInit {
   show(element: TasationData) {
     if (this.assignedTo.value) {
       element.AssignedTo = this.assignedTo.value!;   
-      
-      
     } else {
       this.openSnackBar()
     }
@@ -251,7 +249,7 @@ export class AppComponent implements AfterViewInit {
           this.http.post<TasationData[]>('http://localhost:3000/api/v1/upload-file', formData)
             .subscribe((data) => {
               // Sanitized logo returned from backend
-              console.log("RETURN DATA> ", data)
+              console.log("RETURN DATA> ",typeof data)
               this.dataCsv = data
 
               console.log("dataReceived ----> ", this.dataCsv[0]);
