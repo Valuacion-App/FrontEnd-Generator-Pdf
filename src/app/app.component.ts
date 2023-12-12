@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { NgxFileDropModule } from 'ngx-file-drop';
 
@@ -11,7 +11,7 @@ import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 
 
 import { HttpClient } from '@angular/common/http';
 
-
+import {MatSnackBar} from '@angular/material/snack-bar';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -60,6 +60,8 @@ interface TasationData {
   },
   Created: string;
   Updated: string;
+  IsCPU: boolean;
+  AssignedTo: string;
 }
 
 export interface PeriodicElement {
@@ -126,7 +128,10 @@ enum articles {
     MatPaginatorModule,
     MatSortModule,
     MatCheckboxModule,
-    MatSelectModule],
+    MatSelectModule,
+    FormsModule,
+    MatFormFieldModule,
+    ReactiveFormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -136,6 +141,7 @@ enum articles {
 export class AppComponent implements AfterViewInit {
   title = 'Generador de Monografias';
   displayColumns: any[] = columns;
+  assignedTo = new FormControl('', [Validators.required, ]);
   displayedColumns: string[] = ['CodigoTasacion', 'Viñeta', 'Ubication', 'Article', 'SubGroup', 'Detalle'];
   //columnsToDisplay: string[] = this.displayedColumns.slice();
   columnsToDisplayWithExpand = [...this.displayedColumns, 'actions', 'expand'];
@@ -149,11 +155,13 @@ export class AppComponent implements AfterViewInit {
 
   private dataCsv: TasationData[] = []
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private _snackBar: MatSnackBar) { }
 
-  ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = "Test String";
-
+  openSnackBar() {
+    this._snackBar.open('Debe ingresar a la persona a la que esta asignada el articulo', 'cerrar', {
+      duration: 3000,
+      panelClass: [],
+    });
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -163,12 +171,20 @@ export class AppComponent implements AfterViewInit {
       this.dataTasation.paginator.firstPage();
     }
   }
-
+  show(element: TasationData) {
+    if (this.assignedTo.value) {
+      element.AssignedTo = this.assignedTo.value!;   
+      
+      
+    } else {
+      this.openSnackBar()
+    }
+ 
+  }
   ngAfterViewInit() {
     this.paginator._intl.itemsPerPageLabel = 'Articulos por pagina'
     this.dataTasation.paginator = this.paginator;
     this.dataTasation.sort = this.sort;
-    console.log(this.paginator);
   }
   getDataByArticles(event: MatSelectChange) {
     const filterValue = event.value;
@@ -235,7 +251,7 @@ export class AppComponent implements AfterViewInit {
           this.http.post<TasationData[]>('http://localhost:3000/api/v1/upload-file', formData)
             .subscribe((data) => {
               // Sanitized logo returned from backend
-              console.log("RETURN DATA> ", typeof data)
+              console.log("RETURN DATA> ", data)
               this.dataCsv = data
 
               console.log("dataReceived ----> ", this.dataCsv[0]);

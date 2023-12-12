@@ -1,13 +1,25 @@
 table {
-    width: 100%;
+  width: 100%;
   }
+
+.red-snackbar {
+  background: #F44336;
+  color: white;
+}
+
+mat-form-field.assigned {
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+}
 .mat-mdc-form-field {
-  padding-right: 10%;
+  padding-left: 5%;
+  padding-right: 5%;
   font-size: 14px;
   width: 40%;
 }
 .mat-column-Ubication {
-  width: 20%;
+  width: 10%;
   font-weight: bold;
 }
 .mat-column-Article {
@@ -18,11 +30,19 @@ table {
   width: 10%;
   font-weight: bold;
 }
+.mat-column-CodigoTasacion {
+  width: 10%;
+  
+}
 .mat-column-actions {
+  width: 20%;
   text-align: center;
 }
 .mat-column-Detalle {
-  max-width: 10%;
+  width: 10%;
+}
+.mat-column-Viñeta {
+  min-width: 5%;
 }
 .mat-column-expandedDetail {
   background-color: rgba(128, 174, 197, 0.15);
@@ -30,57 +50,78 @@ table {
 .mat-mdc-header-cell {
   font-weight: bold;
 }
-.crop { 
+.cropUbication { 
   overflow:hidden;
   white-space:nowrap; 
   text-overflow:ellipsis; 
-  width: 240px;
+  width: 185px;
 }
-.cropDetails { 
+.cropSubGroup { 
   overflow:hidden;
   white-space:nowrap; 
   text-overflow:ellipsis; 
-  width: 130px;
+  width: 120px;
 }
-.mat-column-CodigoTasacion {
-  min-width: 10%;
-  padding-right: 24px;
+.cropArticle { 
+  overflow:hidden;
+  white-space:nowrap; 
+  text-overflow:ellipsis; 
+  width: 160px;
 }
-  button {
-    margin: 16px 8px;
-  }
-  
-  tr.example-detail-row {
-    height: 0;
-  }
-  
-  tr.example-element-row:not(.example-expanded-row):hover {
-    background: rgba(111, 169, 198, 0.15);
-  }
-  .icon-pdf {
-    color: rgba(245, 11, 11, 0.99);
-  }
-  .icon-excel {
-    color: rgba(28, 217, 11, 0.99);
-  }
-  
-  tr.example-element-row:not(.example-expanded-row):active {
-    background: rgba(111, 169, 198, 0.15);
-  }
-  
-  .example-element-row td {
-    border-bottom-width: 0;
-  }
-  
-  .example-element-detail {
-    overflow: hidden;
-    display: flex;
-  }
-  
-  .example-element-description {
-    padding: 16px;
-  }
-  
-  .example-element-description-attribution {
-    opacity: 0.5;
-  }
+.cropCodigoTasacion { 
+  overflow:hidden;
+  white-space:nowrap; 
+  text-overflow:ellipsis; 
+  width: 100px;
+}
+.cropViñeta { 
+  overflow:hidden;
+  white-space:nowrap; 
+  text-overflow:ellipsis; 
+  width: 50px;
+}
+.cropDetalle { 
+  overflow:hidden;
+  white-space:nowrap; 
+  text-overflow:ellipsis; 
+  width: 120px;
+}
+
+button {
+  margin: 10px 8px;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: rgba(111, 169, 198, 0.15);
+}
+.icon-pdf {
+  color: rgba(245, 11, 11, 0.99);
+}
+.icon-excel {
+  color: rgba(28, 217, 11, 0.99);
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: rgba(111, 169, 198, 0.15);
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
