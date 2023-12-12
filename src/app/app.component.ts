@@ -45,6 +45,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { ITasation } from './interfaces/tasation.interface';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 export interface PeriodicElement {
   name: string;
@@ -116,6 +117,8 @@ enum articles {
     FormsModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    
+    NavbarComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
