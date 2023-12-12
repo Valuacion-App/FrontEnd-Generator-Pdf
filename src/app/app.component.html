@@ -179,7 +179,7 @@
         <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" 
         (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
             <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-              Optional custom content that replaces the the entire default content.
+              Ingrese el Archivo .csv.
               <button type="button" (click)="openFileSelector()">Browse Files</button>
             </ng-template>
         </ngx-file-drop>
@@ -201,6 +201,12 @@
       <!--<button mat-raised-button (click)="addColumn()"> Add column </button>
       <button mat-raised-button (click)="removeColumn()"> Remove column </button>
       <button mat-raised-button (click)="shuffle()"> Shuffle </button>-->
+      <form>
+        <mat-form-field class="assigned">
+          <mat-label>Asignado a</mat-label>
+          <input type="text" matInput [formControl]="assignedTo" required>
+        </mat-form-field>
+      </form>
       <mat-form-field>
         <mat-label>Filtrar por Grupo</mat-label>
         <mat-select (selectionChange)="getDataByArticles($event)">
@@ -211,8 +217,8 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. TAC102" #input>
       </mat-form-field>
       
       <table mat-table [dataSource]="dataTasation" multiTemplateDataRows class="mat-elevation-z8">
@@ -221,24 +227,29 @@
           @if (column.columnName === 'Ubicacion') {
           <ng-container [matColumnDef]="column.columnTag">
             <th mat-header-cell *matHeaderCellDef> {{column.columnName}} </th>
-            <td mat-cell *matCellDef="let element"> <div class="crop">{{element[column.columnTag]}}</div></td>
+            <td mat-cell *matCellDef="let element"> <div class="crop{{column.columnTag}}">{{element[column.columnTag]}}</div></td>
           </ng-container>
-          } @else if (column.columnName === 'Nro.') {
+          } @else if (column.columnName === 'Sub Grupo') {
             <ng-container [matColumnDef]="column.columnTag">
               <th mat-header-cell *matHeaderCellDef > {{column.columnName}} </th>
-              <td mat-cell *matCellDef="let element; let i = index;"><div class="cropDetails">{{i}}</div></td>
+              <td mat-cell *matCellDef="let element;"><div class="crop{{column.columnTag}}">{{element[column.columnTag]}}</div></td>
+            </ng-container> 
+          }  @else if (column.columnName === 'Detalle') {
+            <ng-container [matColumnDef]="column.columnTag">
+              <th mat-header-cell *matHeaderCellDef > {{column.columnName}} </th>
+              <td mat-cell *matCellDef="let element; let i = index;"><div class="crop{{column.columnTag}}">{{element[column.columnTag]}}</div></td>
             </ng-container> 
           } @else {
           <ng-container [matColumnDef]="column.columnTag">
             <th mat-header-cell *matHeaderCellDef > {{column.columnName}} </th>
-            <td mat-cell *matCellDef="let element"><div class="cropDetails"> {{element[column.columnTag]}}</div></td>
+            <td mat-cell *matCellDef="let element"><div class="crop{{column.columnTag}}"> {{element[column.columnTag]}}</div></td>
           </ng-container> 
           }
         }
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef > Acciones </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-icon-button>
+            <button mat-icon-button (click)="show(element)">
               <mat-icon class="icon-pdf">picture_as_pdf</mat-icon>
             </button>
             <button mat-icon-button>
